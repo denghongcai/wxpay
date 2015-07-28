@@ -1,6 +1,6 @@
 # wxpay
 自用
-WeiXin Payment 
+WeiXin Payment
 
 ###微信支付的配置要点：请留心注意本部分内容，因为这很可能是你遇到的大坑。
 1.网页授权（设置错误会出现redirect_url参数错误的错误）
@@ -16,30 +16,30 @@ WeiXin Payment
 1. 修改composer.json文件,加入```"hardywen/wxpay": "dev-master"```
 ```json
   "require": {
-    "hardywen/wxpay": "dev-master"
+    "wujingke/wxpay": "dev-master"
   }
 ```
 
 2. 修改app/config/app.php
 ```php
 'providers' => array(
-  		'Hardywen\Wxpay\WxpayServiceProvider'
+  		JingKe\Wxpay\WxpayServiceProvider::class
 )
 
 
 'aliases' => array(
-		'Wxpay'           => 'Hardywen\Wxpay\Facades\WxpayFacade'
+		'Wxpay'           => JingKe\Wxpay\Facades\WxpayFacade::class
 )
 ```
 
 3. 运行```composer update ```命令
-4. 运行```php artisan config:publish hardywen/wxpay```
-5. 如有必要修改支付页面，运行```php artisan view:publish hardywen/wxpay```
+4. 运行```php artisan publish ```
+5. 如有必要修改支付页面，运行```php artisan ```
 
 
 ###Usage
 
-支付调用 
+支付调用
 ```php  
   $config = array(
     'body'=>'',
@@ -54,21 +54,20 @@ WeiXin Payment
 ```php
   $wxpay = Wxpay::instance('jsApi');
   $notify = $wxpay->verifyNotify(); //验证回调
-  
+
   if($notify){
     //业务逻辑
-    
+
     $wxpay->setReturnParameter("return_code","SUCCESS");//设置返回码
     $wxpay->returnXml();
   }else{
-    
+
     //业务逻辑
-    
-    
+
+
 	$wxpay->setReturnParameter("return_code","FAIL");//返回状态码
 	$wxpay->setReturnParameter("return_msg","签名失败");//返回信息
 	$wxpay->returnXml();
   }
-  
-```
 
+```
