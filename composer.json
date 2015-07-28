@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-0": {
-            "JingKe": "src/"
+            "JingKe\\Wxpay": "src/"
         }
     },
     "minimum-stability": "stable"

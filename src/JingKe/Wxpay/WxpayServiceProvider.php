@@ -20,8 +20,8 @@ class WxpayServiceProvider extends ServiceProvider
     */
     public function boot()
     {
-        $configPath = __DIR__ . '/../config/wxpay.php';
-        //$this->publishes([$configPath => config_path('wxpay.php')], 'config');
+        $configPath = __DIR__ . '/../../config/wxpay.php';
+        $this->publishes([$configPath => config_path('wxpay.php')], 'config');
     }
 
     /**
@@ -30,12 +30,10 @@ class WxpayServiceProvider extends ServiceProvider
      * @return void
      */
     public function register()
-    {/*
+    {
         $app = $this->app;
         $app['wxpay'] = $app->share(function ($app) {
-            return new Wxpay($app['config']->get('wxpay::config'));
-        });*/
+            return new Wxpay(config("wxpay",[]));
+        });
     }
-
-
 }
