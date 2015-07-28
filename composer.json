@@ -1,21 +1,21 @@
 {
-    "name": "hardywen/wxpay",
+    "name": "wujingke/wxpay",
     "description": "微信支付 微信js支付 Weixin weixinPay",
-    "keywords": ["PHP","laravel","Laravel 4", "WeixinPay"],
+    "keywords": ["PHP","laravel","Laravel 5", "WeixinPay"],
     "license": "MIT",
     "authors": [
         {
-            "name": "HardyWen",
-            "email": "hardy.wen@foxmail.com"
+            "name": "JingKe Wu",
+            "email": "Laow3721@vip.qq.com"
         }
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.2.*"
+        "illuminate/support": "5.1.*"
     },
     "autoload": {
         "psr-0": {
-            "Hardywen\\Wxpay": "src/"
+            "JingKe\\Wxpay": "src/"
         }
     },
     "minimum-stability": "stable"
