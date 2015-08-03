@@ -6,7 +6,6 @@ use JingKe\Wxpay\lib\Common;
 use JingKe\Wxpay\lib\UnifiedOrder;
 use JingKe\Wxpay\lib\Notify;
 use Session;
-
 class JsApi
 {
 
@@ -168,6 +167,7 @@ class JsApi
         }
         */
         $this->openid = Session::get('wechat_openid');
+
 
         return $this;
     }
