@@ -49,9 +49,8 @@ class JsApi
 
     public function pay()
     {
-        $jsApiParameters = $this->getOpenid()->jsApiParameters();
-        $return_url = $this->wxpay_config['return_url'];
-        return View::make('wxpay::pay', compact('jsApiParameters', 'return_url'))->render();
+        return  $this->getOpenid()->jsApiParameters();
+
     }
 
     public function verifyNotify()
@@ -166,7 +165,7 @@ class JsApi
             dd($data);
         }
         */
-        $this->openid = Session::get('wechat_openid');
+        $this->openid = Session::get('wechat_openid')->openid;
 
 
         return $this;
