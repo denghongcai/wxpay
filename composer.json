@@ -1,12 +1,12 @@
 {
-    "name": "wujingke/wxpay",
+    "name": "hongcaideng/wxpay",
     "description": "微信支付 微信js支付 Weixin weixinPay",
     "keywords": ["PHP","laravel","Laravel 5", "WeixinPay"],
     "license": "MIT",
     "authors": [
         {
-            "name": "HongcaiDeng Wu",
-            "email": "Laow3721@vip.qq.com"
+            "name": "Hongcai Deng",
+            "email": "admin@dhchouse.com"
         }
     ],
     "require": {

@@ -13,10 +13,10 @@ WeiXin Payment
 
 ###Install
 
-1. 修改composer.json文件,加入```"hardywen/wxpay": "dev-master"```
+1. 修改composer.json文件,加入```"hongcaideng/wxpay": "dev-master"```
 ```json
   "require": {
-    "wujingke/wxpay": "dev-master"
+    "hongcaideng/wxpay": "dev-master"
   }
 ```
 
