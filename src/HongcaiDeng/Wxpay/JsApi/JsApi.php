@@ -133,8 +133,6 @@ class JsApi
      */
     public function getOpenid()
     {
-
-        /*
         if (!isset($_GET['code'])) {
             //触发微信返回code码
             $url = $this->createOauthUrlForCode($this->wxpay_config['js_api_call_url']);
@@ -164,8 +162,7 @@ class JsApi
         if (array_key_exists('errcode', $data)) {
             dd($data);
         }
-        */
-        $this->openid = Session::get('wechat_openid')->openid;
+        $this->openid = $data['openid'];
 
 
         return $this;
