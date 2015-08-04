@@ -23,18 +23,17 @@ WeiXin Payment
 2. 修改app/config/app.php
 ```php
 'providers' => array(
-  		HongcaiDeng\Wxpay\WxpayServiceProvider::class
+	HongcaiDeng\Wxpay\WxpayServiceProvider::class
 )
 
 
 'aliases' => array(
-		'Wxpay'           => HongcaiDeng\Wxpay\Facades\WxpayFacade::class
+	'Wxpay' => HongcaiDeng\Wxpay\Facades\WxpayFacade::class
 )
 ```
 
 3. 运行```composer update ```命令
-4. 运行```php artisan publish ```
-5. 如有必要修改支付页面，运行```php artisan ```
+4. 运行```php artisan vendor publish ```
 
 
 ###Usage
