@@ -1,4 +1,4 @@
-<?php namespace JingKe\Wxpay\Facades;
+<?php namespace HongcaiDeng\Wxpay\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

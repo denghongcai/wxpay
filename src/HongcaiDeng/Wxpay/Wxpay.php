@@ -1,6 +1,6 @@
-<?php namespace JingKe\Wxpay;
+<?php namespace HongcaiDeng\Wxpay;
 
-use JingKe\Wxpay\JsApi\JsApi;
+use HongcaiDeng\Wxpay\JsApi\JsApi;
 
 class Wxpay
 {

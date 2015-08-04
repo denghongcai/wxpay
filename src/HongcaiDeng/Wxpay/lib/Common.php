@@ -1,4 +1,4 @@
-<?php namespace JingKe\Wxpay\lib;
+<?php namespace HongcaiDeng\Wxpay\lib;
 
 trait Common
 {
