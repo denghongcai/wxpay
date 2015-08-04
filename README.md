@@ -28,7 +28,7 @@ WeiXin Payment
 
 
 'aliases' => array(
-	'Wxpay' => HongcaiDeng\Wxpay\Facades\WxpayFacade::class
+	'Wxpay' => HongcaiDeng\Wxpay\Facades\Wxpay::class
 )
 ```
 
