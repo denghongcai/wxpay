@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\View;
 use HongcaiDeng\Wxpay\lib\Common;
 use HongcaiDeng\Wxpay\lib\UnifiedOrder;
 use HongcaiDeng\Wxpay\lib\Notify;
-use Session;
+use Log;
+
 class JsApi
 {
 
@@ -49,8 +50,8 @@ class JsApi
 
     public function pay()
     {
-        return  $this->getOpenid()->jsApiParameters();
-
+        $jsApiParameters = $this->getOpenid()->jsApiParameters();
+        return view('order.pay',compact('jsApiParameters'));
     }
 
     public function verifyNotify()
@@ -106,7 +107,7 @@ class JsApi
             $redirectUrl = \Request::url();
         }
         $urlObj["appid"] = $this->wxpay_config['appid'];
-        $urlObj["redirect_uri"] = "$redirectUrl";
+        $urlObj["redirect_uri"] = urlencode($redirectUrl);
         $urlObj["response_type"] = "code";
         $urlObj["scope"] = "snsapi_base";
         $urlObj["state"] = "STATE"."#wechat_redirect";
@@ -162,8 +163,8 @@ class JsApi
         if (array_key_exists('errcode', $data)) {
             dd($data);
         }
-        $this->openid = $data['openid'];
 
+        $this->openid = $data['openid'];
 
         return $this;
     }

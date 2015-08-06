@@ -4,7 +4,6 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <title>微信安全支付</title>
     <script type="text/javascript">
-
       //调用微信JS api 支付
       function jsApiCall()
       {
@@ -24,8 +23,6 @@
               }else{
                 alert(res.err_code+res.err_desc+res.err_msg);
               }
-
-              window.location.href = "<?php echo $return_url ?>";
             }
         );
       }

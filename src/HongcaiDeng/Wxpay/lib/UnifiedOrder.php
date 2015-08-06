@@ -60,6 +60,7 @@ trait UnifiedOrder
     public function postXml()
     {
         $xml = $this->createXml();
+        \Log::info($xml);
         $this->response = $this->postXmlCurl($xml, $this->url, $this->curl_timeout);
         return $this->response;
     }
@@ -91,6 +92,7 @@ trait UnifiedOrder
     {
         $this->postXml();
         $this->result = $this->xmlToArray($this->response);
+        \Log::info($this->response);
         $prepay_id = $this->result["prepay_id"];
         return $prepay_id;
     }
