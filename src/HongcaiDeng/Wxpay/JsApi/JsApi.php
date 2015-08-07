@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\View;
 use HongcaiDeng\Wxpay\lib\Common;
 use HongcaiDeng\Wxpay\lib\UnifiedOrder;
 use HongcaiDeng\Wxpay\lib\Notify;
-use Log;
 
 class JsApi
 {
@@ -13,7 +12,7 @@ class JsApi
     use Common, UnifiedOrder, Notify;
 
 
-    public $wxpay_config  = [
+    private $wxpay_config  = [
         'body' => '',
         'total_fee' => '',
         'out_trade_no' => '',
@@ -25,21 +24,28 @@ class JsApi
         'goods_tag' => '',
         'product_id' => '',
     ];
-    public $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-    public $code;//code码，用以获取openid
-    public $openid;//用户的openid
-    public $parameters;//jsApi参数，格式为json
-    public $prepay_id;//使用统一支付接口得到的预支付id
-    public $curl_timeout;//curl超时时间
+    private $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    private $code;//code码，用以获取openid
+    private $openid;//用户的openid
+    private $parameters;//jsApi参数，格式为json
+    private $returnParameters;//返回参数，类型为关联数组
+    private $prepay_id;//使用统一支付接口得到的预支付id
+    private $curl_timeout;//curl超时时间
 
     public function __construct($config)
     {
-        $this->wxpay_config = $this->wxpay_config = array_merge($this->wxpay_config, $config);
+        $this->wxpay_config = array_merge($this->wxpay_config, $config);
 
         //设置curl超时时间
         $this->curl_timeout = $this->wxpay_config['curl_timeout'];
     }
 
+    /**
+     * 设置JsApi的配置
+     *
+     * @param $config
+     * @return $this
+     */
     public function setConfig($config)
     {
         $this->wxpay_config = array_merge($this->wxpay_config, $config);
@@ -47,26 +53,38 @@ class JsApi
         return $this;
     }
 
-
+    /**
+     * 发起支付
+     *
+     * @return array 预支付ID和支付视图
+     */
     public function pay()
     {
         $jsApiParameters = $this->getOpenid()->jsApiParameters();
-        return view('order.pay',compact('jsApiParameters'));
+        return [$this->prepay_id, view('order.pay', compact('jsApiParameters'))];
     }
 
+    /**
+     * 校验通知
+     *
+     * @return array 校验是否通过和校验数据
+     */
     public function verifyNotify()
     {
-        $notify = $this->checkSign();
+        list($notify, $data) = $this->checkSign();
 
         if ($this->wxpay_config['log']) {
-            $data = json_encode($this->getData());
-
-            \Log::info("===============WeiXin pay notify result==============:$notify. Data:$data");
+            \Log::info("Weixin Pay Notify Result: $notify. Data:".json_encode($data));
         }
 
-        return $notify;
+        return [$notify, $data];
     }
 
+    /**
+     * 生成jsApi参数
+     *
+     * @return string
+     */
     public function jsApiParameters()
     {
         $this->setParameter("openid", $this->openid);//商品描述
@@ -88,18 +106,19 @@ class JsApi
         $this->setParameter("goods_tag", $this->wxpay_config['goods_tag']);//商品标记
         $this->setParameter("product_id", $this->wxpay_config['product_id']);//商品ID
 
-        $prepay_id = $this->getPrepayId();
+        $prepay_id = $this->getUnifiedOrderPrepayId();
 
         $this->setPrepayId($prepay_id);
 
         $jsApiParameters = $this->getParameters();
-        //echo $jsApiParameters;exit;
         return $jsApiParameters;
     }
 
 
     /**
-     * 	作用：生成可以获得code的url
+     * 生成获得Code的URL
+     *
+     * @return string
      */
     public function createOauthUrlForCode($redirectUrl)
     {
@@ -116,7 +135,9 @@ class JsApi
     }
 
     /**
-     * 	作用：生成可以获得openid的url
+     * 生成可以获得OpenID的URL
+     *
+     * @return string
      */
     public function createOauthUrlForOpenid()
     {
@@ -130,7 +151,9 @@ class JsApi
 
 
     /**
-     * 	作用：通过curl向微信提交code，以获取openid
+     * 通过Curl向微信提交Code，以获取OpenID
+     *
+     * @return $this
      */
     public function getOpenid()
     {
@@ -154,7 +177,7 @@ class JsApi
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        //运行curl，结果以jason形式返回
+        //运行curl，结果以json形式返回
         $res = curl_exec($ch);
         curl_close($ch);
 
@@ -170,7 +193,7 @@ class JsApi
     }
 
     /**
-     * 	作用：设置prepay_id
+     * 设置prepay_id
      */
     public function setPrepayId($prepayId)
     {
@@ -178,7 +201,7 @@ class JsApi
     }
 
     /**
-     * 	作用：设置code
+     * 设置code
      */
     public function setCode($code_)
     {
@@ -186,7 +209,9 @@ class JsApi
     }
 
     /**
-     * 	作用：设置jsApi的参数
+     * 设置jsApi的参数
+     *
+     * @return string
      */
     public function getParameters()
     {

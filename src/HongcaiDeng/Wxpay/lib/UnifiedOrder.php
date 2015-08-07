@@ -4,16 +4,13 @@ use Illuminate\Exception;
 
 trait UnifiedOrder
 {
-
-
-    public $response;//微信返回的响应
-    public $result;//返回参数，类型为关联数组
-
-
     /**
-     * 生成接口参数xml
+     * 生成接口参数Xml
+     *
+     * @return mixed
+     * @throws \Exception
      */
-    public function createXml()
+    public function createUnifiedOrderXml()
     {
         try {
             //检测必填参数
@@ -42,9 +39,11 @@ trait UnifiedOrder
         }
     }
 
-
     /**
-     * 	作用：设置请求参数
+     * 设置请求参数
+     *
+     * @param $parameter
+     * @param $parameterValue
      */
     public function setParameter($parameter, $parameterValue)
     {
@@ -53,47 +52,60 @@ trait UnifiedOrder
         }
     }
 
-
     /**
-     * 	作用：post请求xml
+     * POST请求Xml
+     *
+     * @return mixed
+     * @throws \Exception
      */
-    public function postXml()
+    public function postUnifiedOrderXml()
     {
-        $xml = $this->createXml();
-        \Log::info($xml);
-        $this->response = $this->postXmlCurl($xml, $this->url, $this->curl_timeout);
-        return $this->response;
+        $xml = $this->createUnifiedOrderXml();
+        $response = $this->postXmlCurl($xml, $this->url, $this->curl_timeout);
+        return $response;
     }
 
     /**
-     * 	作用：使用证书post请求xml
+     * 使用证书POST请求Xml
+     *
+     * @return mixed
+     * @throws \Exception
      */
-    public function postXmlSSL()
+    public function postUnifiedOrderXmlSSL()
     {
-        $xml = $this->createXml();
-        $this->response = $this->postXmlSSLCurl($xml, $this->url, $this->curl_timeout);
-        return $this->response;
+        $xml = $this->createUnifiedOrderXml();
+        $response = $this->postXmlSSLCurl($xml, $this->url, $this->curl_timeout);
+        return $response;
     }
 
     /**
-     * 	作用：获取结果，默认不使用证书
+     * 获取结果，默认不使用证书
+     *
+     * @return mixed
      */
-    public function getResult()
+    public function getUnifiedOrderResult()
     {
-        $this->postXml();
-        $this->result = $this->xmlToArray($this->response);
-        return $this->result;
+        $response = $this->postUnifiedOrderXml();
+        $result = $this->xmlToArray($response);
+        return $result;
     }
 
     /**
      * 获取prepay_id
+     *
+     * @return string
      */
-    public function getPrepayId()
+    public function getUnifiedOrderPrepayId()
     {
-        $this->postXml();
-        $this->result = $this->xmlToArray($this->response);
-        \Log::info($this->response);
-        $prepay_id = $this->result["prepay_id"];
-        return $prepay_id;
+        if(isset($this->prepay_id) && !is_null($this->prepay_id)) {
+            return $this->prepay_id;
+        }
+        else {
+            $response = $this->postUnifiedOrderXml();
+            $result = $this->xmlToArray($response);
+            $prepay_id = $result["prepay_id"];
+
+            return $prepay_id;
+        }
     }
 }

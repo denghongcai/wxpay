@@ -1,7 +1,7 @@
 {
     "name": "hongcaideng/wxpay",
-    "description": "微信支付 微信Javascript支付 Weixin WeixinPay",
-    "keywords": ["PHP","Laravel","Laravel 5", "WeixinPay"],
+    "description": "微信支付 微信js支付 Weixin weixinPay",
+    "keywords": ["PHP","laravel","Laravel 5", "WeixinPay"],
     "license": "MIT",
     "authors": [
         {

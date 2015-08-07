@@ -1,5 +1,4 @@
-# wxpay
-自用
+# WxPay
 WeiXin Payment
 
 ###微信支付的配置要点：请留心注意本部分内容，因为这很可能是你遇到的大坑。
@@ -9,7 +8,6 @@ WeiXin Payment
 2.支付授权目录（设置不对会无法发起js支付，因为没有权限，错误为：“getBrandWCPayRequest:fail_no permission to execute”
 ）
 设置好授权目录即可。
-
 
 ###Install
 
@@ -23,18 +21,17 @@ WeiXin Payment
 2. 修改app/config/app.php
 ```php
 'providers' => array(
-	HongcaiDeng\Wxpay\WxpayServiceProvider::class
+  		HongcaiDeng\Wxpay\WxpayServiceProvider::class
 )
 
 
 'aliases' => array(
-	'Wxpay' => HongcaiDeng\Wxpay\Facades\Wxpay::class
+		'Wxpay'           => HongcaiDeng\Wxpay\Facades\WxpayFacade::class
 )
 ```
 
 3. 运行```composer update ```命令
-4. 运行```php artisan vendor publish ```
-
+4. 如有必要修改支付页面，运行```php artisan vendor publish```
 
 ###Usage
 
@@ -45,14 +42,14 @@ WeiXin Payment
     'total_fee' =>'',
     ...
   );
-  Wxpay::instance('jsApi')->setConfig($config)->pay();
+  list($prepay_id, $view) = Wxpay::instance('jsApi')->setConfig($config)->pay();
 ```
 
 支付回调
 
 ```php
   $wxpay = Wxpay::instance('jsApi');
-  $notify = $wxpay->verifyNotify(); //验证回调
+  list($notify, $data) = $wxpay->verifyNotify(); //验证回调
 
   if($notify){
     //业务逻辑

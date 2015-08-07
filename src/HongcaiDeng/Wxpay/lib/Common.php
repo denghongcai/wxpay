@@ -2,8 +2,12 @@
 
 trait Common
 {
-
-
+    /**
+     * 裁剪字符串
+     *
+     * @param $value
+     * @return null|string
+     */
     public function trimString($value)
     {
         $ret = null;
@@ -17,7 +21,10 @@ trait Common
     }
 
     /**
-     * 	作用：产生随机字符串，不长于32位
+     * 产生随机字符串，不长于32位
+     *
+     * @param $length
+     * @return string
      */
     public function createNonceStr($length = 32)
     {
@@ -30,7 +37,10 @@ trait Common
     }
 
     /**
-     * 	作用：格式化参数，签名过程需要使用
+     * 格式化参数，签名过程需要使用
+     *
+     * @param $paraMap, $urlencode
+     * @return string
      */
     public function formatBizQueryParaMap($paraMap, $urlencode)
     {
@@ -43,7 +53,7 @@ trait Common
             //$buff .= strtolower($k) . "=" . $v . "&";
             $buff .= $k . "=" . $v . "&";
         }
-        $reqPar;
+        $reqPar = '';
         if (strlen($buff) > 0) {
             $reqPar = substr($buff, 0, strlen($buff)-1);
         }
@@ -51,7 +61,10 @@ trait Common
     }
 
     /**
-     * 	作用：生成签名
+     * 生成签名
+     *
+     * @params $Obj
+     * @return string
      */
     public function getSign($Obj)
     {
@@ -75,7 +88,10 @@ trait Common
     }
 
     /**
-     * 	作用：array转xml
+     * Array转Xml
+     *
+     * @params $arr
+     * @return string
      */
     public function arrayToXml($arr)
     {
@@ -92,7 +108,10 @@ trait Common
     }
 
     /**
-     * 	作用：将xml转为array
+     * Xml转Array
+     *
+     * @params $xml
+     * @return array
      */
     public function xmlToArray($xml)
     {
@@ -102,7 +121,10 @@ trait Common
     }
 
     /**
-     * 	作用：以post方式提交xml到对应的接口url
+     * 以POST方式提交Xml到对应的接口URL
+     *
+     * @params $xml, $url, $second
+     * @return string|boolean
      */
     public function postXmlCurl($xml, $url, $second=30)
     {
@@ -139,7 +161,10 @@ trait Common
     }
 
     /**
-     * 	作用：使用证书，以post方式提交xml到对应的接口url
+     * 使用证书，以POST方式提交Xml到对应的接口URL
+     *
+     * @params $xml, $url, $second
+     * @return string|boolean
      */
     public function postXmlSSLCurl($xml, $url, $second=30)
     {
@@ -182,13 +207,24 @@ trait Common
     }
 
     /**
-     * 	作用：打印数组
+     * 设置返回微信的Xml数据
+     *
+     * @params $parameter, $parameterValue
+     * @return string
      */
-    public function printErr($wording='', $err='')
+    public function setReturnParameter($parameter, $parameterValue)
     {
-        print_r('<pre>');
-        echo $wording."</br>";
-        var_dump($err);
-        print_r('</pre>');
+        $this->returnParameters[$this->trimString($parameter)] = $this->trimString($parameterValue);
+    }
+
+    /**
+     * 将Xml数据返回微信
+     *
+     * @retrun string
+     */
+    public function returnXml()
+    {
+        $returnXml = $this->arrayToXml($this->returnParameters);
+        return $returnXml;
     }
 }
