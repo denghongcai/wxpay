@@ -24,10 +24,9 @@ class JsApi
         'goods_tag' => '',
         'product_id' => '',
     ];
-    private $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
     private $code;//code码，用以获取openid
     private $openid;//用户的openid
-    private $parameters;//jsApi参数，格式为json
+    private $parameters;//请求参数，类型为关联数组
     private $returnParameters;//返回参数，类型为关联数组
     private $prepay_id;//使用统一支付接口得到的预支付id
     private $curl_timeout;//curl超时时间
@@ -78,6 +77,28 @@ class JsApi
         }
 
         return [$notify, $data];
+    }
+
+    /**
+     * 查询订单
+     *
+     * @return array
+     */
+    public function query()
+    {
+        $this->setParameter('out_trade_no', $this->wxpay_config['out_trade_no']); // 商户订单号
+        return $this->getQueryResult();
+    }
+
+    /**
+     * 关闭订单
+     *
+     * @return array
+     */
+    public function close()
+    {
+        $this->setParameter('out_trade_no', $this->wxpay_config['out_trade_no']); // 商户订单号
+        return $this->getCloseResult();
     }
 
     /**

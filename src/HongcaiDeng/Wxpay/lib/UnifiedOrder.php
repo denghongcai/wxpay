@@ -4,6 +4,8 @@ use Illuminate\Exception;
 
 trait UnifiedOrder
 {
+    private $unifiedOrderURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+
     /**
      * 生成接口参数Xml
      *
@@ -15,18 +17,18 @@ trait UnifiedOrder
         try {
             //检测必填参数
             if ($this->parameters["out_trade_no"] == null) {
-                throw new \Exception("缺少统一支付接口必填参数out_trade_no！"."<br>");
+                throw new \Exception("缺少统一下单接口必填参数out_trade_no！"."<br>");
             } elseif ($this->parameters["body"] == null) {
-                throw new \Exception("缺少统一支付接口必填参数body！"."<br>");
+                throw new \Exception("缺少统一下单接口必填参数body！"."<br>");
             } elseif ($this->parameters["total_fee"] == null) {
-                throw new \Exception("缺少统一支付接口必填参数total_fee！"."<br>");
+                throw new \Exception("缺少统一下单接口必填参数total_fee！"."<br>");
             } elseif ($this->parameters["notify_url"] == null) {
-                throw new \Exception("缺少统一支付接口必填参数notify_url！"."<br>");
+                throw new \Exception("缺少统一下单接口必填参数notify_url！"."<br>");
             } elseif ($this->parameters["trade_type"] == null) {
-                throw new \Exception("缺少统一支付接口必填参数trade_type！"."<br>");
+                throw new \Exception("缺少统一下单接口必填参数trade_type！"."<br>");
             } elseif ($this->parameters["trade_type"] == "JSAPI" &&
                 $this->parameters["openid"] == null) {
-                throw new \Exception("统一支付接口中，缺少必填参数openid！trade_type为JSAPI时，openid为必填参数！"."<br>");
+                throw new \Exception("统一下单接口中，缺少必填参数openid！trade_type为JSAPI时，openid为必填参数！"."<br>");
             }
             $this->parameters["appid"] = $this->wxpay_config['appid'];//公众账号ID
             $this->parameters["mch_id"] = isset($this->wxpay_config['mch_id']) ? $this->wxpay_config['mch_id'] : $this->wxpay_config['mchid'];//商户号
@@ -40,20 +42,7 @@ trait UnifiedOrder
     }
 
     /**
-     * 设置请求参数
-     *
-     * @param $parameter
-     * @param $parameterValue
-     */
-    public function setParameter($parameter, $parameterValue)
-    {
-        if ($parameterValue !== '') {
-            $this->parameters[$this->trimString($parameter)] = $this->trimString($parameterValue);
-        }
-    }
-
-    /**
-     * POST请求Xml
+     * POST请求统一下单Xml
      *
      * @return mixed
      * @throws \Exception
@@ -61,12 +50,12 @@ trait UnifiedOrder
     public function postUnifiedOrderXml()
     {
         $xml = $this->createUnifiedOrderXml();
-        $response = $this->postXmlCurl($xml, $this->url, $this->curl_timeout);
+        $response = $this->postXmlCurl($xml, $this->unifiedOrderURL, $this->curl_timeout);
         return $response;
     }
 
     /**
-     * 使用证书POST请求Xml
+     * 使用证书POST请求统一下单Xml
      *
      * @return mixed
      * @throws \Exception
@@ -74,12 +63,12 @@ trait UnifiedOrder
     public function postUnifiedOrderXmlSSL()
     {
         $xml = $this->createUnifiedOrderXml();
-        $response = $this->postXmlSSLCurl($xml, $this->url, $this->curl_timeout);
+        $response = $this->postXmlSSLCurl($xml, $this->unifiedOrderURL, $this->curl_timeout);
         return $response;
     }
 
     /**
-     * 获取结果，默认不使用证书
+     * 获取统一下单结果，默认不使用证书
      *
      * @return mixed
      */

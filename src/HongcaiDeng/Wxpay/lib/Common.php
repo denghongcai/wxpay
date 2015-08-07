@@ -207,6 +207,19 @@ trait Common
     }
 
     /**
+     * 设置请求参数
+     *
+     * @param $parameter
+     * @param $parameterValue
+     */
+    public function setParameter($parameter, $parameterValue)
+    {
+        if ($parameterValue !== '') {
+            $this->parameters[$this->trimString($parameter)] = $this->trimString($parameterValue);
+        }
+    }
+
+    /**
      * 设置返回微信的Xml数据
      *
      * @params $parameter, $parameterValue

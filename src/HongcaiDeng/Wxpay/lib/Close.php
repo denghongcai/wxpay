@@ -1,9 +1,9 @@
 <?php namespace HongcaiDeng\Wxpay\lib;
 
 
-trait Query {
+trait Close {
 
-    private $queryURL = "https://api.mch.weixin.qq.com/pay/orderquery";
+    private $closeURL = "https://api.mch.weixin.qq.com/pay/closeorder";
 
     /**
      * 生成接口参数Xml
@@ -11,7 +11,7 @@ trait Query {
      * @return mixed
      * @throws \Exception
      */
-    public function createQueryXml()
+    public function createCloseXml()
     {
         try {
             //检测必填参数
@@ -31,13 +31,13 @@ trait Query {
     /**
      * POST请求查询Xml
      *
-     * @return mixed
+     * @return array
      * @throws \Exception
      */
-    private function postQueryXml()
+    private function postCloseXml()
     {
-        $xml = $this->createQueryXml();
-        $response = $this->postXmlCurl($xml, $this->queryURL, $this->curl_timeout);
+        $xml = $this->createCloseXml();
+        $response = $this->postXmlCurl($xml, $this->closeURL, $this->curl_timeout);
         return $response;
     }
 
@@ -46,9 +46,9 @@ trait Query {
      *
      * @return array
      */
-    public function getQueryResult()
+    public function getCloseResult()
     {
-        $response = $this->postQueryXml();
+        $response = $this->postCloseXml();
         $result = $this->xmlToArray($response);
         return $result;
     }
