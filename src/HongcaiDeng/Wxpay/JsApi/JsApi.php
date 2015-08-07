@@ -60,7 +60,7 @@ class JsApi
     public function pay()
     {
         $jsApiParameters = $this->getOpenid()->jsApiParameters();
-        return [$this->prepay_id, view('order.pay', compact('jsApiParameters'))];
+        return [$this->prepay_id, view('wxpay::pay', compact('jsApiParameters'))];
     }
 
     /**

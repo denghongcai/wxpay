@@ -20,11 +20,11 @@ class WxpayServiceProvider extends ServiceProvider
     */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/../../../resources/views/pay.blade.php', 'pay');
+        $this->loadViewsFrom(__DIR__ . '/../../../resources/views', 'wxpay');
         $configPath = __DIR__ . '/../../../config/wxpay.php';
         $this->publishes([
             $configPath => config_path('wxpay.php'),
-            __DIR__ . '/../../../resources/views/pay.blade.php' => base_path('resources/views/hongcaideng/pay.blade.php')
+            __DIR__ . '/../../../resources/views' => base_path('resources/views/vendor/wxpay')
         ]);
     }
 
