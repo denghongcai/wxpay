@@ -9,9 +9,7 @@ trait Notify
      */
     public function checkSign()
     {
-        $data = $this->xmlToArray($GLOBALS['HTTP_RAW_POST_DATA']);
-
-        unset($data['sign']);
+        $data = $this->xmlToArray(file_get_contents('php://input'));
 
         $sign = $this->getSign($data);//本地签名
         if ($data['sign'] == $sign) {
