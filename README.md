@@ -35,11 +35,13 @@ WeiXin Payment
 
 ###Usage
 
-支付调用
+支付调用示例
 ```php  
   $config = array(
     'body'=>'',
     'total_fee' =>'',
+    'out_trade_no' => $order->id,
+    'js_api_call_url' => action('OrderController@pay', ['id' => $order->id]),
     ...
   );
   list($prepay_id, $view) = Wxpay::instance('jsApi')->setConfig($config)->pay();
@@ -61,9 +63,9 @@ WeiXin Payment
     //业务逻辑
 
 
-	$wxpay->setReturnParameter("return_code","FAIL");//返回状态码
-	$wxpay->setReturnParameter("return_msg","签名失败");//返回信息
-	$wxpay->returnXml();
+    $wxpay->setReturnParameter("return_code","FAIL");//返回状态码
+    $wxpay->setReturnParameter("return_msg","签名失败");//返回信息
+    $wxpay->returnXml();
   }
 
 ```
