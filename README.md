@@ -21,12 +21,12 @@ WeiXin Payment
 2. 修改app/config/app.php
 ```php
 'providers' => array(
-  		HongcaiDeng\Wxpay\WxpayServiceProvider::class
+  	HongcaiDeng\Wxpay\WxpayServiceProvider::class
 )
 
 
 'aliases' => array(
-		'Wxpay'           => HongcaiDeng\Wxpay\Facades\WxpayFacade::class
+	'Wxpay' => HongcaiDeng\Wxpay\Facades\Wxpay::class,
 )
 ```
 
