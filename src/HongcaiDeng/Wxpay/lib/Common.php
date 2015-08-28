@@ -68,6 +68,7 @@ trait Common
      */
     public function getSign($Obj)
     {
+        unset($Obj['sign']);
         foreach ($Obj as $k => $v) {
             $Parameters[$k] = $v;
         }
