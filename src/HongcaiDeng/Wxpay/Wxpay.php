@@ -1,10 +1,11 @@
-<?php namespace HongcaiDeng\Wxpay;
+<?php
+
+namespace HongcaiDeng\Wxpay;
 
 use HongcaiDeng\Wxpay\JsApi\JsApi;
 
 class Wxpay
 {
-
     public $config;
 
     public function __construct($config)

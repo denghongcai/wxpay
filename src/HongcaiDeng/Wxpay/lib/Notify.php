@@ -1,9 +1,11 @@
-<?php namespace HongcaiDeng\Wxpay\lib;
+<?php
+
+namespace HongcaiDeng\Wxpay\lib;
 
 trait Notify
 {
     /**
-     * 检查签名
+     * 检查签名.
      *
      * @return bool
      */
@@ -15,6 +17,7 @@ trait Notify
         if ($data['sign'] == $sign) {
             return [true, $data];
         }
+
         return [false, $data];
     }
 }

@@ -1,11 +1,14 @@
-<?php namespace HongcaiDeng\Wxpay\lib;
+<?php
+
+namespace HongcaiDeng\Wxpay\lib;
 
 trait Common
 {
     /**
-     * 裁剪字符串
+     * 裁剪字符串.
      *
      * @param $value
+     *
      * @return null|string
      */
     public function trimString($value)
@@ -17,53 +20,59 @@ trait Common
                 $ret = null;
             }
         }
+
         return $ret;
     }
 
     /**
-     * 产生随机字符串，不长于32位
+     * 产生随机字符串，不长于32位.
      *
      * @param $length
+     *
      * @return string
      */
     public function createNonceStr($length = 32)
     {
-        $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-        $str ="";
+        $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $str = '';
         for ($i = 0; $i < $length; $i++) {
-            $str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
+
         return $str;
     }
 
     /**
-     * 格式化参数，签名过程需要使用
+     * 格式化参数，签名过程需要使用.
      *
      * @param $paraMap, $urlencode
+     *
      * @return string
      */
     public function formatBizQueryParaMap($paraMap, $urlencode)
     {
-        $buff = "";
+        $buff = '';
         ksort($paraMap);
         foreach ($paraMap as $k => $v) {
             if ($urlencode) {
                 $v = urlencode($v);
             }
             //$buff .= strtolower($k) . "=" . $v . "&";
-            $buff .= $k . "=" . $v . "&";
+            $buff .= $k.'='.$v.'&';
         }
         $reqPar = '';
         if (strlen($buff) > 0) {
-            $reqPar = substr($buff, 0, strlen($buff)-1);
+            $reqPar = substr($buff, 0, strlen($buff) - 1);
         }
+
         return $reqPar;
     }
 
     /**
-     * 生成签名
+     * 生成签名.
      *
      * @params $Obj
+     *
      * @return string
      */
     public function getSign($Obj)
@@ -77,7 +86,7 @@ trait Common
         $String = $this->formatBizQueryParaMap($Parameters, false);
         //echo '【string1】'.$String.'</br>';
         //签名步骤二：在string后加入KEY
-        $String = $String."&key=".$this->wxpay_config['key'];
+        $String = $String.'&key='.$this->wxpay_config['key'];
         //echo "【string2】".$String."</br>";
         //签名步骤三：MD5加密
         $String = md5($String);
@@ -89,45 +98,50 @@ trait Common
     }
 
     /**
-     * Array转Xml
+     * Array转Xml.
      *
      * @params $arr
+     *
      * @return string
      */
     public function arrayToXml($arr)
     {
-        $xml = "<xml>";
-        foreach ($arr as $key=>$val) {
+        $xml = '<xml>';
+        foreach ($arr as $key => $val) {
             if (is_numeric($val)) {
-                $xml.="<".$key.">".$val."</".$key.">";
+                $xml .= '<'.$key.'>'.$val.'</'.$key.'>';
             } else {
-                $xml.="<".$key."><![CDATA[".$val."]]></".$key.">";
+                $xml .= '<'.$key.'><![CDATA['.$val.']]></'.$key.'>';
             }
         }
-        $xml.="</xml>";
+        $xml .= '</xml>';
+
         return $xml;
     }
 
     /**
-     * Xml转Array
+     * Xml转Array.
      *
      * @params $xml
+     *
      * @return array
      */
     public function xmlToArray($xml)
     {
         //将XML转为array
         $array_data = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+
         return $array_data;
     }
 
     /**
-     * 以POST方式提交Xml到对应的接口URL
+     * 以POST方式提交Xml到对应的接口URL.
      *
      * @params $xml, $url, $second
-     * @return string|boolean
+     *
+     * @return string|bool
      */
-    public function postXmlCurl($xml, $url, $second=30)
+    public function postXmlCurl($xml, $url, $second = 30)
     {
         //初始化curl
         $ch = curl_init();
@@ -151,23 +165,26 @@ trait Common
         //返回结果
         if ($data) {
             curl_close($ch);
+
             return $data;
         } else {
             $error = curl_errno($ch);
-            echo "curl出错，错误码:$error"."<br>";
+            echo "curl出错，错误码:$error".'<br>';
             echo "<a href='http://curl.haxx.se/libcurl/c/libcurl-errors.html'>错误原因查询</a></br>";
             curl_close($ch);
+
             return false;
         }
     }
 
     /**
-     * 使用证书，以POST方式提交Xml到对应的接口URL
+     * 使用证书，以POST方式提交Xml到对应的接口URL.
      *
      * @params $xml, $url, $second
-     * @return string|boolean
+     *
+     * @return string|bool
      */
-    public function postXmlSSLCurl($xml, $url, $second=30)
+    public function postXmlSSLCurl($xml, $url, $second = 30)
     {
         $ch = curl_init();
         //超时时间
@@ -197,18 +214,20 @@ trait Common
         //返回结果
         if ($data) {
             curl_close($ch);
+
             return $data;
         } else {
             $error = curl_errno($ch);
-            echo "curl出错，错误码:$error"."<br>";
+            echo "curl出错，错误码:$error".'<br>';
             echo "<a href='http://curl.haxx.se/libcurl/c/libcurl-errors.html'>错误原因查询</a></br>";
             curl_close($ch);
+
             return false;
         }
     }
 
     /**
-     * 设置请求参数
+     * 设置请求参数.
      *
      * @param $parameter
      * @param $parameterValue
@@ -221,9 +240,10 @@ trait Common
     }
 
     /**
-     * 设置返回微信的Xml数据
+     * 设置返回微信的Xml数据.
      *
      * @params $parameter, $parameterValue
+     *
      * @return string
      */
     public function setReturnParameter($parameter, $parameterValue)
@@ -239,6 +259,7 @@ trait Common
     public function returnXml()
     {
         $returnXml = $this->arrayToXml($this->returnParameters);
+
         return $returnXml;
     }
 }
