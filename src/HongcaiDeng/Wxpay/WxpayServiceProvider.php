@@ -1,11 +1,11 @@
-<?php namespace HongcaiDeng\Wxpay;
+<?php
+
+namespace HongcaiDeng\Wxpay;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 
 class WxpayServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -14,17 +14,17 @@ class WxpayServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
-    * Bootstrap the application events.
-    *
-    * @return void
-    */
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/../../../resources/views', 'wxpay');
-        $configPath = __DIR__ . '/../../../config/wxpay.php';
+        $this->loadViewsFrom(__DIR__.'/../../../resources/views', 'wxpay');
+        $configPath = __DIR__.'/../../../config/wxpay.php';
         $this->publishes([
-            $configPath => config_path('wxpay.php'),
-            __DIR__ . '/../../../resources/views' => base_path('resources/views/vendor/wxpay')
+            $configPath                         => config_path('wxpay.php'),
+            __DIR__.'/../../../resources/views' => base_path('resources/views/vendor/wxpay'),
         ]);
     }
 
@@ -37,7 +37,7 @@ class WxpayServiceProvider extends ServiceProvider
     {
         $app = $this->app;
         $app['wxpay'] = $app->share(function ($app) {
-            return new Wxpay(config("wxpay",[]));
+            return new Wxpay(config('wxpay', []));
         });
     }
 }
